@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Instagram | Feed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen pb-10">
+    <nav class="bg-white shadow-sm p-4 flex justify-between items-center px-10 mb-8 w-full sticky top-0 z-50">
+        <h1 class="text-xl font-bold text-gray-800">Mini Instagram Feed</h1>
+        <div class="space-x-4">
+            <a href="/profile" class="text-blue-500 font-semibold hover:text-blue-600">Profile</a>
+            <a href="/auth/logout" class="text-red-500 font-semibold hover:text-red-600">Logout</a>
+        </div>
+    </nav>
+
+    <div class="max-w-2xl mx-auto px-4 space-y-8">
+        <% if (posts.length > 0) { %>
+            <% posts.forEach(function(post) { %>
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                    <div class="p-4 border-b flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-tr from-yellow-400 to-purple-500 rounded-full p-[2px]">
+                            <img src="https://ui-avatars.com/api/?name=<%= post.user.username %>&background=random" class="w-full h-full rounded-full border-2 border-white object-cover">
+                        </div>
+                        <p class="font-bold text-gray-800"><%= post.user.username %></p>
+                    </div>
+                    <img src="/images/uploads/<%= post.image %>" class="w-full max-h-[600px] object-contain bg-gray-50">
+                    <div class="p-4">
+                        <p class="text-gray-800 whitespace-pre-wrap"><span class="font-bold mr-2"><%= post.user.username %></span><%= post.content %></p>
+                        <p class="text-xs text-gray-400 mt-2 uppercase tracking-wide"><%= new Date(post.createdAt).toLocaleDateString() %></p>
+                    </div>
+                </div>
+            <% }) %>
+            
+            <!-- Pagination Controls -->
+            <div class="flex justify-center items-center space-x-4 mt-8 pb-8">
+                <% if (currentPage > 1) { %>
+                    <a href="/feed?page=<%= currentPage - 1 %>" class="px-4 py-2 bg-white border rounded shadow-sm text-blue-500 font-bold hover:bg-gray-50">Previous</a>
+                <% } %>
+                
+                <span class="text-gray-600 font-semibold">Page <%= currentPage %> of <%= totalPages %></span>
+                
+                <% if (currentPage < totalPages) { %>
+                    <a href="/feed?page=<%= currentPage + 1 %>" class="px-4 py-2 bg-white border rounded shadow-sm text-blue-500 font-bold hover:bg-gray-50">Next</a>
+                <% } %>
+            </div>
+        <% } else { %>
+            <div class="bg-white p-10 rounded-lg shadow-sm border border-gray-100 text-center">
+                <p class="text-gray-500 text-lg">No posts to show yet.</p>
+                <a href="/profile" class="mt-4 inline-block text-blue-500 font-semibold hover:underline">Go create one!</a>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
